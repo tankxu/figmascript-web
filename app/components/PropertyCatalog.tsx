@@ -5,6 +5,7 @@ import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import { CodeBlock } from "~/components/CodeBlock";
 import { Copy, ListPlus } from "lucide-react";
 import { useTaskList } from "~/context/TaskListContext";
+import { toast } from "sonner";
 
 const CATALOG = [
   {
@@ -64,7 +65,7 @@ export function PropertyCatalog() {
   const [_, dispatch] = useTaskList();
 
   return (
-    <section id="api" className="bg-muted/50 py-16">
+    <section id="api" className="bg-neutral-100 py-16">
       <div className="mx-auto max-w-4xl px-4">
         <h2 className="mb-8 text-3xl font-bold">Friendly API</h2>
         <p className="mb-6 text-base text-muted-foreground max-w-2xl">
@@ -115,8 +116,23 @@ export function PropertyCatalog() {
                           </SheetTrigger>
                           <SheetContent side="right" className="w-[380px]">
                             <div className="p-6">
-                              <div className="mb-4 font-semibold">Runnable Code Generator</div>
-                              <CodeBlock code={item.code} />
+                              <div className="mb-4 font-semibold">Executable Code Generator</div>
+                              <CodeBlock code={`const selection = figma.currentPage.selection;
+for (const node of selection) {
+  ${item.code}
+}`} />
+<div className="mt-4">
+  <Button variant="outline" size="sm" onClick={() => {
+    navigator.clipboard.writeText(`const selection = figma.currentPage.selection;
+for (const node of selection) {
+  ${item.code}
+}`);
+toast.success("Copied to clipboard")
+  }}>
+    <Copy className="h-4 w-4" />
+    Copy to clipboard
+  </Button>
+</div>
                             </div>
                           </SheetContent>
                         </Sheet>
