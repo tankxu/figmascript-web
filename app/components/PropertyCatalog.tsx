@@ -165,12 +165,12 @@ for (const node of selection) {
         <div className="mt-6 mb-2 font-semibold">Helper: color()</div>
         <CodeBlock
           code={`function color(input) {
-  // Accepts hex, rgb(), rgba(), hsl(), etc. Returns Figma RGB object.
+  // Accepts hex, rgb(), hsl(), etc. Returns Figma RGB object.
   if (typeof input === 'string' && input[0] === '#') {
     let hex = input.replace('#','');
     if (hex.length === 3) hex = hex.split('').map(x=>x+x).join('');
     const num = parseInt(hex,16);
-    return { type: 'SOLID', color: { r: ((num>>16)&255)/255, g: ((num>>8)&255)/255, b: (num&255)/255 }, opacity: 1 };
+    return { r: ((num>>16)&255)/255, g: ((num>>8)&255)/255, b: (num&255)/255 };
   }
   // TODO: add rgb/rgba/hsl parsing here for full support
   throw new Error('Unsupported color format');

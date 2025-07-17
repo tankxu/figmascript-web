@@ -5,7 +5,7 @@ export function Hero() {
   return (
     <section className="flex min-h-[50vh] flex-col items-center justify-center gap-6 px-4 text-center">
       <h1 className="max-w-3xl text-balance text-4xl font-extrabold sm:text-5xl">
-        Generate&nbsp;Figma&nbsp;scripts effortlessly.
+        Generate Figma scripts effortlessly.
       </h1>
       <p className="max-w-xl text-muted-foreground">
         Readable API docs and one-click generators that super-charge your design
