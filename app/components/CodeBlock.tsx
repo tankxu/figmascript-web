@@ -26,14 +26,14 @@ export function CodeBlock({ code }: { code: string }) {
       if (typeof window !== "undefined") {
         if (!(window as any).__shikiHighlighter) {
           (window as any).__shikiHighlighter = await createHighlighter({
-            themes: ["snazzy-light"],
+            themes: ["slack-ochin"],
             langs: ["typescript", "javascript", "jsx", "tsx"],
           });
         }
         const highlighter: Highlighter = (window as any).__shikiHighlighter;
         const html = highlighter.codeToHtml(code, {
           lang: "typescript",
-          theme: "snazzy-light",
+          theme: "slack-ochin",
         });
         if (isMounted) setHtml(html);
       } else {

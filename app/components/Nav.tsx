@@ -9,11 +9,11 @@ export function Nav() {
           Figma Script
         </Link>
         <nav className="flex items-center gap-6 text-sm">
-          <Link to="#api" className="hover:text-primary sm:block hidden">
+          <Link to="/#api" className="hover:text-primary sm:block hidden">
             Friendly API
           </Link>
           <Link
-            to="mailto:tankxuu@gmail.com"
+            to="/custom-script"
             className="hover:text-primary"
           >
             Custom Script Service

@@ -3,7 +3,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetTrigger
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Badge } from "~/components/ui/badge";
 import { useTaskList } from "~/context/TaskListContext";
-import { GripVertical } from "lucide-react";
+import { GripVertical, ClipboardList } from "lucide-react";
 
 
 export function ScriptBuilderFAB() {
@@ -27,7 +27,7 @@ export function ScriptBuilderFAB() {
     <Sheet>
       <SheetTrigger asChild>
         <button className="fixed bottom-6 right-6 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg">
-          📝
+        <ClipboardList className="h-5 w-5 opacity-75" />
           {count > 0 && (
             <Badge className="absolute -right-1 -top-1 h-5 w-5 justify-center rounded-full p-0 text-[11px]">
               {count}

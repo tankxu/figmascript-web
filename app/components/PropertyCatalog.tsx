@@ -26,24 +26,133 @@ const CATALOG = [
       { id: "padding", name: "Padding", desc: "Set paddings", types: ["FRAME", "COMPONENT"], code: `node.paddingLeft = 16;\nnode.paddingRight = 16;\nnode.paddingTop = 8;\nnode.paddingBottom = 8;` },
       { id: "horizontal-resizing", name: "Horizontal Resizing", desc: "Set horizontal resizing mode", types: ["FRAME", "COMPONENT"], code: `node.layoutSizingHorizontal = "FILL|FIXED|HUG";` },
       { id: "vertical-resizing", name: "Vertical Resizing", desc: "Set vertical resizing mode", types: ["FRAME", "COMPONENT"], code: `node.layoutSizingVertical = "FILL|FIXED|HUG";` },
-      { id: "align-items", name: "Align Items", desc: "Align children on cross axis", types: ["FRAME", "COMPONENT"], code: `node.counterAxisAlignItems = 'CENTER';` },
+      { id: "primary-axis-align-items", name: "Primary Axis Align Items", desc: "Align children on primary axis", types: ["FRAME", "COMPONENT"], code: `node.primaryAxisAlignItems = 'MIN|CENTER|MAX|SPACE_BETWEEN'\n
+// Auto layout frame
+// +------------------------------------+
+// | +-----------++-----------+         |
+// | |           ||           |         |
+// | |  Child 1  ||  Child 2  |         |
+// | |           ||           |         |
+// | +-----------++-----------+         |
+// +------------------------------------+
+node.primaryAxisAlignItems = 'MIN'
+
+// Auto layout frame
+// +------------------------------------+
+// |          +-----------++-----------+|
+// |          |           ||           ||
+// |          |  Child 1  ||  Child 2  ||
+// |          |           ||           ||
+// |          +-----------++-----------+|
+// +------------------------------------+
+node.primaryAxisAlignItems = 'MAX'
+
+// Auto layout frame
+// +------------------------------------+
+// |     +-----------++-----------+     |
+// |     |           ||           |     |
+// |     |  Child 1  ||  Child 2  |     |
+// |     |           ||           |     |
+// |     +-----------++-----------+     |
+// +------------------------------------+
+node.primaryAxisAlignItems = 'CENTER'
+
+// Auto layout frame
+// +------------------------------------+
+// |+-----------+          +-----------+|
+// ||           |          |           ||
+// ||  Child 1  |          |  Child 2  ||
+// ||           |          |           ||
+// |+-----------+          +-----------+|
+// +------------------------------------+
+node.primaryAxisAlignItems = 'SPACE_BETWEEN'
+;` },
+      { id: "cross-axis-align-items", name: "Cross Axis Align Items", desc: "Align children on cross axis", types: ["FRAME", "COMPONENT"], code: `node.counterAxisAlignItems = 'MIN|CENTER|MAX|BASELINE'\n
+// Auto layout frame
+// +--------------------------+
+// |+-----------++----+       |
+// ||           ||    |       |
+// ||  Child 1  ||asdf|       |
+// ||           ||    |       |
+// |+-----------++----+       |
+// |                          |
+// |                          |
+// +--------------------------+
+node.counterAxisAlignItems = 'MIN'
+
+// Auto layout frame
+// +--------------------------+
+// |                          |
+// |                          |
+// |+-----------++----+       |
+// ||           ||    |       |
+// ||  Child 1  ||asdf|       |
+// ||           ||    |       |
+// |+-----------++----+       |
+// +--------------------------+
+node.counterAxisAlignItems = 'MAX'
+
+// Auto layout frame
+// +--------------------------+
+// |                          |
+// |+-----------++----+       |
+// ||           ||    |       |
+// ||  Child 1  ||asdf|       |
+// ||           ||    |       |
+// |+-----------++----+       |
+// |                          |
+// +--------------------------+
+node.counterAxisAlignItems = 'CENTER'
+
+// Auto layout frame
+// +--------------------------+
+// |+-----------+             |
+// ||           |+----+       |
+// ||  Child 1  ||    |       |
+// ||           ||asdf|       |
+// |+-----------+|    |       |
+// |             +----+       |
+// |                          |
+// +--------------------------+
+node.counterAxisAlignItems = 'BASELINE'
+;` },
     ],
   },
   {
     section: "Fill & Stroke",
     items: [
-      { id: "fill-solid", name: "Solid Fill", desc: "Set a solid fill color (uses color() helper)", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR", "TEXT"], code: `node.fills = [color('#FF4D4F')];` },
+      { id: "fill-solid", name: "Solid Fill", desc: "Set a solid fill color (uses convertColor() helper)", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR", "TEXT"], code: `node.fills = [{ type: 'SOLID', color: convertColor('#000') }, opacity: 1]; // use convertColor() helper to convert hex, rgb(), hsl() to Figma RGB object` },
       { id: "remove-fills", name: "Remove All Fills", desc: "Remove all fills", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR", "TEXT"], code: `node.fills = [];` },
-      { id: "apply-variable-fill", name: "Apply Fill Variable", desc: "Apply fill variable", types: ["RECTANGLE", "FRAME", "VECTOR", "COMPONENT", "INSTANCE"], code: `node.boundVariables.fills = VARIABLE_ID;` },
-      { id: "stroke-color-weight", name: "Stroke Color & Weight", desc: "Set stroke color and weight (uses color() helper)", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR", "TEXT"], code: `node.strokes = [color('#222')];\nnode.strokeWeight = 2;` },
-      { id: "stroke-align", name: "Stroke Align", desc: "Set stroke alignment", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR"], code: `node.strokeAlign = 'INSIDE';` },
+      { id: "apply-variable-fill", name: "Apply Fill Variable", desc: "Apply fill variable", types: ["RECTANGLE", "FRAME", "VECTOR", "COMPONENT", "INSTANCE"], code: `figma.variables.setBoundVariableForPaint(node, 0, 'fills', VARIABLE_ID);` },
+      { id: "stroke-color-weight", name: "Stroke Color & Weight", desc: "Set stroke color and weight", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR", "TEXT"], code: `node.strokes = [{ type: 'SOLID', color: convertColor('#000') }, opacity: 1]; // use convertColor() helper to convert hex, rgb(), hsl() to Figma RGB object\nnode.strokeWeight = 2; ` },
+      { id: "stroke-align", name: "Stroke Align", desc: "Set stroke alignment", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR"], code: `node.strokeAlign = 'CENTER|INSIDE|OUTSIDE';` },
       { id: "stroke-dash-pattern", name: "Stroke Dash Pattern", desc: "Set dashed stroke", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR"], code: `node.dashPattern = [4, 2];` },
       { id: "opacity", name: "Opacity", desc: "Set opacity 0-1", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR", "TEXT", "GROUP", "INSTANCE"], code: `node.opacity = 0.5;` },
-      { id: "blend-mode", name: "Blend Mode", desc: "Set blend mode", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR", "TEXT", "GROUP", "INSTANCE"], code: `node.blendMode = "MULTIPLY";` },
-      { id: "drop-shadow", name: "Drop Shadow", desc: "Add a drop shadow effect", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR"], code: `node.effects = [{ type: 'DROP_SHADOW', ... }];` },
+      { id: "blend-mode", name: "Blend Mode", desc: "Set blend mode", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR", "TEXT", "GROUP", "INSTANCE"], code: `node.blendMode = "MULTIPLY";\n
+// Blend mode value list:
+// "PASS_THROUGH" 
+// "NORMAL" 
+// "DARKEN" 
+// "MULTIPLY" 
+// "LINEAR_BURN" // "Plus darker" in Figma
+// "COLOR_BURN" 
+// "LIGHTEN" 
+// "SCREEN" 
+// "LINEAR_DODGE" // "Plus lighter" in Figma
+// "COLOR_DODGE" 
+// "OVERLAY" 
+// "SOFT_LIGHT" 
+// "HARD_LIGHT" 
+// "DIFFERENCE" 
+// "EXCLUSION" 
+// "HUE" 
+// "SATURATION" 
+// "COLOR" 
+// "LUMINOSITY"
+` },
+      { id: "drop-shadow", name: "Drop Shadow", desc: "Add a drop shadow effect", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR"], code: `node.effects = [{ type: 'DROP_SHADOW', blendMode: 'NORMAL', color: convertColorWithOpacity('rgba(0,0,0,0.5)'), offset: { x: 0, y: 0 }, radius: 10, visible: true }]; // use convertColorWithOpacity() helper to convert hex, rgba(), hsla() to Figma RGB object` },
       { id: "layer-blur", name: "Layer Blur", desc: "Add a layer blur effect", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR"], code: `node.effects = [{ type: 'LAYER_BLUR', radius: 10, visible: true }];` },
       { id: "background-blur", name: "Background Blur", desc: "Add a background blur effect", types: ["FRAME", "RECTANGLE", "ELLIPSE", "VECTOR"], code: `node.effects = [{ type: 'BACKGROUND_BLUR', radius: 20, visible: true }];` },
-      { id: "layout-grid", name: "Layout Grid", desc: "Set a layout grid", types: ["FRAME", "RECTANGLE"], code: `node.layoutGrids = [{ pattern: 'COLUMNS', count: 12, gutterSize: 16 }];` },
     ],
   },
   {
@@ -52,8 +161,8 @@ const CATALOG = [
       { id: "replace-text", name: "Replace Text", desc: "Change the text content", types: ["TEXT"], code: `node.characters = "New Content";` },
       { id: "font-size", name: "Font Size", desc: "Set font size", types: ["TEXT"], code: `node.fontSize = 16;` },
       { id: "font-weight", name: "Font Weight", desc: "Set font weight (style)", types: ["TEXT"], code: `node.fontName = { family: "Inter", style: "Bold" };` },
-      { id: "line-height", name: "Line Height", desc: "Set line height (pixels)", types: ["TEXT"], code: `node.lineHeight = { unit: "PIXELS", value: 24 };` },
-      { id: "text-fill", name: "Text Fill Color", desc: "Set text color (uses color() helper)", types: ["TEXT"], code: `node.fills = [color('#000')];` },
+      { id: "line-height", name: "Line Height", desc: "Set line height (pixels)", types: ["TEXT"], code: `node.lineHeight = { unit: "PIXELS", value: 24 }; // set line height to 24px\nnode.lineHeight = { unit: "PERCENT", value: 150 }; // set line height to 150% of font size\nnode.lineHeight = { unit: "AUTO" }; // set line height to auto` },
+      { id: "text-fill", name: "Text Fill Color", desc: "Set text color", types: ["TEXT"], code: `node.fills = [{ type: 'SOLID', color: convertColor('#000') }, opacity: 1]; // use convertColor() helper to convert hex, rgb(), hsl() to Figma RGB object` },
       { id: "export-settings", name: "Export Settings", desc: "Set export options (PNG @2x)", types: ["FRAME", "RECTANGLE", "ELLIPSE", "TEXT", "VECTOR"], code: `node.exportSettings = [{ format: 'PNG', suffix: '@2x', constraint: { type: 'SCALE', value: 2 } }];` },
     ],
   },
@@ -94,7 +203,7 @@ export function PropertyCatalog() {
                       <div className="mb-2 text-sm text-muted-foreground">{item.desc}</div>
                       <div className="mb-2 flex flex-wrap gap-2">
                         {item.types.map((t) => (
-                          <span key={t} className="rounded bg-muted px-2 py-1 text-xs">
+                          <span key={t} className="rounded bg-sky-100 text-sky-800 px-2 py-1 text-xs">
                             {t}
                           </span>
                         ))}
@@ -178,20 +287,137 @@ for (const node of selection) {
 }`}
 
         />
-        <div className="mt-6 mb-2 font-semibold">Helper: color()</div>
+        <div className="mt-6 mb-2 font-semibold">Helper: convertColor()</div>
         <CodeBlock
-          code={`function color(input) {
-  // Accepts hex, rgb(), hsl(), etc. Returns Figma RGB object.
-  if (typeof input === 'string' && input[0] === '#') {
-    let hex = input.replace('#','');
+          code={`function convertColor(input) {
+  if (typeof input !== 'string') throw new Error('Input must be a string');
+
+  if (input[0] === '#') {
+    let hex = input.slice(1);
     if (hex.length === 3) hex = hex.split('').map(x=>x+x).join('');
+    if (hex.length === 8) hex = hex.slice(0,6); 
+    if (hex.length !== 6) throw new Error('Invalid hex color format');
     const num = parseInt(hex,16);
-    return { r: ((num>>16)&255)/255, g: ((num>>8)&255)/255, b: (num&255)/255 };
+    return {
+      r: ((num >> 16) & 0xFF) / 255,
+      g: ((num >> 8) & 0xFF) / 255,
+      b: (num & 0xFF) / 255
+    };
   }
-  // TODO: add rgb/rgba/hsl parsing here for full support
+
+  // RGB/RGBA
+  const rgb = input.match(/^rgba?\(([^)]+)\)$/);
+  if (rgb) {
+    const parts = rgb[1].split(',').map(v=>v.trim());
+    if (parts.length < 3) throw new Error('Invalid rgb(a) format');
+    const parse = x => x.endsWith('%') ? parseFloat(x)/100 : (parseFloat(x)>1?parseFloat(x)/255:parseFloat(x));
+    return {
+      r: parse(parts[0]),
+      g: parse(parts[1]),
+      b: parse(parts[2])
+    };
+  }
+
+  // HSL/HSLA
+  const hsl = input.match(/^hsla?\(([^)]+)\)$/);
+  if (hsl) {
+    const [h,s,l] = hsl[1].split(',').map(v=>v.trim());
+    // hsl to rgb
+    let _h = parseFloat(h)/360, _s = parseFloat(s)/100, _l = parseFloat(l)/100;
+    let r,g,b;
+    if (_s===0) r=g=b=_l;
+    else {
+      const q = _l<0.5 ? _l*(1+_s) : _l+_s-_l*_s;
+      const p = 2*_l-q;
+      const hue2rgb = (p,q,t)=>{
+        if(t<0)t+=1;if(t>1)t-=1;
+        if(t<1/6)return p+(q-p)*6*t;
+        if(t<1/2)return q;
+        if(t<2/3)return p+(q-p)*(2/3-t)*6;
+        return p;
+      };
+      r = hue2rgb(p,q,_h+1/3);
+      g = hue2rgb(p,q,_h);
+      b = hue2rgb(p,q,_h-1/3);
+    }
+    return { r, g, b };
+  }
   throw new Error('Unsupported color format');
 }`}
+        />
+         <div className="mt-6 mb-2 font-semibold">Helper: convertColorWithOpacity()</div>
+        <CodeBlock
+          code={`function convertColorWithOpacity(input) {
+  // Returns { r, g, b, a } for Figma; all values in [0,1]
+  if (typeof input !== 'string') throw new Error('Input must be a string');
 
+  if (input[0] === '#') {
+    let hex = input.slice(1);
+    if (hex.length === 3) {
+      hex = hex.split('').map(x=>x+x).join('');
+    }
+    if (hex.length === 6) hex += 'FF';
+    if (hex.length !== 8) throw new Error('Invalid hex color format');
+    const num = parseInt(hex,16);
+    return {
+      r: ((num >> 24) & 0xFF) / 255,
+      g: ((num >> 16) & 0xFF) / 255,
+      b: ((num >> 8) & 0xFF) / 255,
+      a: (num & 0xFF) / 255
+    };
+  }
+
+  const rgbRegex = /^rgba?\(([^)]+)\)$/;
+  let m = input.match(rgbRegex);
+  if (m) {
+    const parts = m[1].split(',').map(v => v.trim());
+    if (parts.length < 3) throw new Error('Invalid rgb(a) format');
+    let [r,g,b,a] = parts;
+    function parseRgb(x) {
+      if (x.endsWith('%')) return parseFloat(x)/100;
+      let n = parseFloat(x);
+      return n>1 ? n/255 : n;
+    }
+    r = parseRgb(r); g = parseRgb(g); b = parseRgb(b);
+    a = parts[3]!==undefined ? parseFloat(parts[3]) : 1;
+    if (isNaN(r)||isNaN(g)||isNaN(b)||isNaN(a)) throw new Error('Invalid rgb(a) value');
+    return { r: r, g: g, b: b, a: a };
+  }
+
+  const hslRegex = /^hsla?\(([^)]+)\)$/;
+  m = input.match(hslRegex);
+  if (m) {
+    const parts = m[1].split(',').map(v => v.trim());
+    if (parts.length < 3) throw new Error('Invalid hsl(a) format');
+    let [h,s,l,a] = parts;
+    h = parseFloat(h);
+    s = parseFloat(s)/100;
+    l = parseFloat(l)/100;
+    a = parts[3]!==undefined ? parseFloat(parts[3]) : 1;
+    function hue2rgb(p,q,t) {
+      if (t<0) t+=1;
+      if (t>1) t-=1;
+      if (t<1/6) return p+(q-p)*6*t;
+      if (t<1/2) return q;
+      if (t<2/3) return p+(q-p)*(2/3-t)*6;
+      return p;
+    }
+    let r,g,b;
+    if (s===0) {
+      r=g=b=l;
+    } else {
+      const q = l < 0.5 ? l*(1+s) : l+s-l*s;
+      const p = 2*l-q;
+      r = hue2rgb(p,q,h/360+1/3);
+      g = hue2rgb(p,q,h/360);
+      b = hue2rgb(p,q,h/360-1/3);
+    }
+    if ([r,g,b,a].some(x=>isNaN(x))) throw new Error('Invalid hsl(a) value');
+    return { r: r, g: g, b: b, a: a };
+  }
+
+  throw new Error('Unsupported color format');
+}`}
         />
         <div className="mt-6 mb-2 font-semibold">Helper: loadFonts()</div>
         <CodeBlock
