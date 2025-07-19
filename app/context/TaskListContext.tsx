@@ -11,6 +11,7 @@ type Action =
   | { type: "add"; item: TaskItem }
   | { type: "remove"; id: string }
   | { type: "reorder"; from: number; to: number }
+  | { type: "updateVars"; id: string; vars: Record<string, string> }
   | { type: "clear" };
 
 function reducer(state: TaskItem[], action: Action): TaskItem[] {
@@ -28,6 +29,10 @@ function reducer(state: TaskItem[], action: Action): TaskItem[] {
       next.splice(action.to, 0, moved);
       return next;
     }
+    case "updateVars":
+      return state.map((t) =>
+        t.id === action.id ? { ...t, vars: action.vars } : t
+      );
     case "clear":
       return [];
     default:
