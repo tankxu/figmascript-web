@@ -1,10 +1,50 @@
-// import { useState } from "react";
-// import { Link } from "@remix-run/react";
+import type { Route } from "./+types/home";
 import { TaskListProvider, useTaskList } from "~/context/TaskListContext";
 import { Nav } from "~/components/Nav";
 import { Hero } from "~/components/Hero";
 import { PropertyCatalog } from "~/components/PropertyCatalog";
 import { ScriptBuilderFAB } from "~/components/ScriptBuilder";
+
+export const meta: Route.MetaFunction = () => {
+  return [
+    { title: "Figma Scripts - Automate Your Design Workflow | FigmaScript.com" },
+    { 
+      name: "description", 
+      content: "Discover powerful Figma Scripts to automate repetitive design tasks. Run JavaScript instantly in Figma Console. No compile step, instant undo, AI-friendly automation for designers." 
+    },
+    { 
+      name: "keywords", 
+      content: "Figma Scripts, Figma automation, design automation, Figma JavaScript, design workflow, Figma Console, UI automation, design tools, Figma API, design productivity" 
+    },
+    { name: "author", content: "FigmaScript" },
+    { name: "robots", content: "index, follow" },
+    { name: "googlebot", content: "index, follow" },
+    // Canonical URL
+    { rel: "canonical", href: "https://figmascript.com" },
+    // Open Graph tags
+    { property: "og:type", content: "website" },
+    { property: "og:title", content: "Figma Scripts - Automate Your Design Workflow" },
+    { property: "og:url", content: "https://figmascript.com" },
+    { 
+      property: "og:description", 
+      content: "Discover powerful Figma Scripts to automate repetitive design tasks. Run JavaScript instantly in Figma Console with no compile step and instant undo support." 
+    },
+    { property: "og:site_name", content: "FigmaScript" },
+    { property: "og:locale", content: "en_US" },
+    // Twitter Card tags
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: "Figma Scripts - Automate Your Design Workflow" },
+    { 
+      name: "twitter:description", 
+      content: "Discover powerful Figma Scripts to automate repetitive design tasks. Run JavaScript instantly in Figma Console." 
+    },
+    // Additional SEO tags
+    { name: "theme-color", content: "#6366f1" },
+    { name: "apple-mobile-web-app-capable", content: "yes" },
+    { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+    { name: "format-detection", content: "telephone=no" },
+  ];
+};
 
 /**
  * Home route – wraps everything in TaskListProvider so
@@ -13,22 +53,64 @@ import { ScriptBuilderFAB } from "~/components/ScriptBuilder";
 export default function Home() {
   return (
     <TaskListProvider>
+      {/* JSON-LD Structured Data for Homepage */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Figma Scripts - Automate Your Design Workflow",
+            "description": "Discover powerful Figma Scripts to automate repetitive design tasks. Run JavaScript instantly in Figma Console.",
+            "url": "https://figmascript.com",
+            "mainEntity": {
+              "@type": "SoftwareApplication",
+              "name": "Figma Scripts",
+              "applicationCategory": "DesignApplication",
+              "operatingSystem": "Web Browser",
+              "description": "JavaScript automation scripts for Figma design tool",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              },
+              "featureList": [
+                "Instant execution in Figma Console",
+                "No compile step required",
+                "Undo support",
+                "AI-friendly format"
+              ]
+            },
+            "breadcrumb": {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://figmascript.com"
+                }
+              ]
+            }
+          })
+        }}
+      />
       <main className="flex min-h-screen flex-col">
         <Nav />
         <Hero />
         {/* -------- What is a Figma Script -------- */}
         <section className="mx-auto w-full max-w-5xl px-4 py-20">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <header className="text-center mb-16">
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               What is a Figma Script?
-            </h2>
+            </h1>
             <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
               A <strong className="text-gray-900">Figma Script</strong> is a short snippet of JavaScript you
               run inside Figma's Console or via custom actions in the{" "}
               <em className="text-blue-600 font-medium">Shortcuts</em> plugin. It's the fastest way to automate
               repetitive tasks—no compile step, instant undo, AI‑friendly.
             </p>
-          </div>
+          </header>
           
           <div className="grid gap-6 md:grid-cols-3">
             <MiniSnippet 

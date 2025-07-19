@@ -3,6 +3,7 @@ import { PropertyCard } from "~/components/PropertyCard";
 import { LayerChips } from "~/components/LayerChips";
 import { CodeBlock } from "~/components/CodeBlock";
 import { CATALOG } from "~/figma-scripts-content/figma-scripts";
+import { convertColor, convertColorWithOpacity, loadFonts } from "~/figma-scripts-content/helper-functions";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -180,6 +181,9 @@ export function PropertyCatalog() {
                                 }))}
                                 snippet={item.displayCode}
                                 template={item.codeTemplate}
+                                helpers={item.helpers}
+                                addComment={item.addComment}
+                                commentTemplate={item.commentTemplate}
                               />
                             </div>
                           </div>
@@ -200,6 +204,105 @@ export function PropertyCatalog() {
             <p className="text-gray-600">Try adjusting your search or filter criteria.</p>
           </div>
         )}
+
+        {/* Execution Templates & Helper Functions */}
+        <div className="mt-20 bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+          <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <span className="text-2xl">🛠️</span>
+            Execution Templates & Helper Functions
+          </h3>
+          <p className="text-gray-600 mb-8">
+            To batch-run property changes on all selected nodes, or to use features like color parsing and loading fonts for text, 
+            use the following templates and helpers. Paste your node.xxx = xxx code into the for-loop of the template as needed.
+          </p>
+
+          {/* Runnable Template */}
+          <div className="mb-12">
+            <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <span className="text-lg">📋</span>
+              Runnable Template
+            </h4>
+            <p className="text-gray-600 mb-4">
+              This template applies your property changes to all selected nodes in Figma.
+            </p>
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+              <CodeBlock
+                code={`const selection = figma.currentPage.selection;
+for (const node of selection) {
+  // Paste node property code here, e.g. node.cornerRadius = 8;
+}`}
+              />
+            </div>
+          </div>
+
+          {/* Helper Functions */}
+          <div className="space-y-8">
+            <div>
+              <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <span className="text-lg">🎨</span>
+                Helper: convertColor()
+              </h4>
+              <p className="text-gray-600 mb-4">
+                Convert hex, rgb, or hsl colors to Figma RGB object. Supports formats like #ff0000, rgb(255,0,0), hsl(0,100%,50%).
+              </p>
+              <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+                <CodeBlock code={convertColor} />
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <span className="text-lg">🌈</span>
+                Helper: convertColorWithOpacity()
+              </h4>
+              <p className="text-gray-600 mb-4">
+                Convert colors with opacity to Figma RGBA object. Handles alpha channel from rgba() and hsla() formats.
+              </p>
+              <div className="bg-purple-50 rounded-lg p-4 border border-purple-200">
+                <CodeBlock code={convertColorWithOpacity} />
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                <span className="text-lg">📝</span>
+                Helper: loadFonts()
+              </h4>
+              <p className="text-gray-600 mb-4">
+                Load fonts for text nodes before applying font-related changes. Required for text property modifications.
+              </p>
+              <div className="bg-orange-50 rounded-lg p-4 border border-orange-200">
+                <CodeBlock code={loadFonts} />
+              </div>
+            </div>
+          </div>
+
+          {/* Usage Example */}
+          <div className="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 border border-blue-200">
+            <h4 className="text-lg font-semibold text-gray-900 mb-3">💡 Usage Example</h4>
+            <p className="text-gray-600 mb-4">
+              Here's how to combine the template with helpers for a complete script:
+            </p>
+            <CodeBlock
+              code={`// Complete example: Change text color and font
+const selection = figma.currentPage.selection;
+
+// Helper functions (copy from above)
+${convertColor.slice(0, 200)}...
+
+${loadFonts.slice(0, 200)}...
+
+// Apply changes to selected nodes
+for (const node of selection) {
+  if (node.type === 'TEXT') {
+    await loadFonts([node]);
+    node.fills = [{ type: 'SOLID', color: convertColor('#ff0000'), opacity: 1 }];
+    node.fontSize = 24;
+  }
+}`}
+            />
+          </div>
+        </div>
       </div>
     </section>
   );

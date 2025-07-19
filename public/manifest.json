@@ -1,0 +1,21 @@
+{
+  "name": "FigmaScript - Automate Your Design Workflow",
+  "short_name": "FigmaScript",
+  "description": "Powerful Figma Scripts to automate repetitive design tasks. Run JavaScript instantly in Figma Console.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["productivity", "developer", "design"],
+  "lang": "en-US",
+  "scope": "/",
+  "prefer_related_applications": false
+} 
